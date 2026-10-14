@@ -1,0 +1,47 @@
+
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    float urun_tutari, odenen_para;
+    int para_ustu;
+    int kupurler[] = {
+        20000, 10000, 5000, 2000, 1000, 500, 100,
+        50, 25, 10, 5, 1
+    };
+    int adet, toplam_kupur = 0;
+    int i;
+
+    printf("Urun tutarini TL olarak girin: ");
+    scanf("%f", &urun_tutari);
+
+    printf("Odenen parayi TL olarak girin: ");
+    scanf("%f", &odenen_para);
+
+    // Para ustunu kurus cinsinden hesapla
+    para_ustu = (int)round((odenen_para - urun_tutari) * 100);
+
+    printf("\nPara ustu: %.2f TL\n", para_ustu / 100.0);
+    printf("Kullanilacak kupurler:\n");
+
+    for (i = 0; i < 12; i++) {
+        adet = para_ustu / kupurler[i];
+
+        if (adet > 0) {
+            if (kupurler[i] >= 100) {
+                printf("%d TL: %d adet\n",
+                       kupurler[i] / 100, adet);
+            } else {
+                printf("%d kurus: %d adet\n",
+                       kupurler[i], adet);
+            }
+
+            toplam_kupur += adet;
+            para_ustu %= kupurler[i];
+        }
+    }
+
+    printf("Toplam kupur sayisi: %d\n", toplam_kupur);
+
+    return 0;
+}
