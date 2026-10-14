@@ -19,7 +19,7 @@ int main() {
     scanf("%f", &odenen_para);
 
     // Para ustunu kurus cinsinden hesapla
-    para_ustu = (int)round((odenen_para - urun_tutari) * 100);
+    para_ustu = (int)roundf((odenen_para - urun_tutari) * 100);
 
     printf("\nPara ustu: %.2f TL\n", para_ustu / 100.0);
     printf("Kullanilacak kupurler:\n");
