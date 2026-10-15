@@ -1,47 +1,42 @@
-
 #include <stdio.h>
-#include <math.h>
+#include <math.h> // round() fonksiyonu için
 
 int main() {
-    float urun_tutari, odenen_para;
-    int para_ustu;
-    int kupurler[] = {
-        20000, 10000, 5000, 2000, 1000, 500, 100,
-        50, 25, 10, 5, 1
+    // 1. Kural: Ürün tutarı ve ödenen para float olarak tanımlanır
+    float urun_tutari = 18.70f;
+    float odenen_para = 20.00f;
+
+    printf("Urun Tutari: %.2f TL\n", urun_tutari);
+    printf("Odenen Para: %.2f TL\n\n", odenen_para);
+
+    // 3. Kural: Doğru yuvarlama yöntemi ile kuruşa çevirme
+    // (Float hassasiyet kaybını önlemek için round ve int dönüşümü kullanılır)
+    float fark = odenen_para - urun_tutari;
+    int kalan = (int)round(fark * 100);
+
+    // Kullanılacak küpürler (kuruş cinsinden: 200 TL = 20000 kuruş)
+    int kupur_degerleri[] = {20000, 10000, 5000, 2000, 1000, 500, 100, 50, 25, 10, 5, 1};
+    const char *kupur_isimleri[] = {
+        "200 TL Banknot", "100 TL Banknot", "50 TL Banknot", "20 TL Banknot",
+        "10 TL Banknot", "5 TL Banknot", "1 TL Madeni Para", "50 Kurus",
+        "25 Kurus", "10 Kurus", "5 Kurus", "1 Kurus"
     };
-    int adet, toplam_kupur = 0;
-    int i;
 
-    printf("Urun tutarini TL olarak girin: ");
-    scanf("%f", &urun_tutari);
+    int toplam_kupur_sayisi = 0;
 
-    printf("Odenen parayi TL olarak girin: ");
-    scanf("%f", &odenen_para);
-
-    // Para ustunu kurus cinsinden hesapla
-    para_ustu = (int)roundf((odenen_para - urun_tutari) * 100);
-
-    printf("\nPara ustu: %.2f TL\n", para_ustu / 100.0);
-    printf("Kullanilacak kupurler:\n");
-
-    for (i = 0; i < 12; i++) {
-        adet = para_ustu / kupurler[i];
-
-        if (adet > 0) {
-            if (kupurler[i] >= 100) {
-                printf("%d TL: %d adet\n",
-                       kupurler[i] / 100, adet);
-            } else {
-                printf("%d kurus: %d adet\n",
-                       kupurler[i], adet);
-            }
-
-            toplam_kupur += adet;
-            para_ustu %= kupurler[i];
+    printf("Para Ustu Dagilimi:\n");
+    for (int i = 0; i < 12; i++) {
+        if (kalan >= kupur_degerleri[i]) {
+            int adet = kalan / kupur_degerleri[i];
+            kalan = kalan % kupur_degerleri[i];
+            toplam_kupur_sayisi += adet;
+            printf("- %d adet %s\n", adet, kupur_isimleri[i]);
         }
     }
 
-    printf("Toplam kupur sayisi: %d\n", toplam_kupur);
+    printf("----------------------------------------\n");
+    // 2. Kural: Toplam küpür sayısı ekrana yazdırılır
+    printf("Musteriye verilen toplam kupur sayisi: %d\n", toplam_kupur_sayisi);
 
     return 0;
 }
